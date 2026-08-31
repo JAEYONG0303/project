@@ -1,0 +1,11 @@
+# 파이썬
+__pycache__/
+*.py[cod]
+
+# 원본 데이터 — prepare_data.py 입력용. 용량이 커서 저장소에 올리지 않는다
+data/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
