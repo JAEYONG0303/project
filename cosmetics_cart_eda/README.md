@@ -18,7 +18,7 @@ Kaggle [eCommerce Events History in Cosmetics Shop](https://www.kaggle.com/datas
 | Notion 보고서 | https://app.notion.com/p/3d603811541181849124f7f90240b4ed |
 | Figma 시안 | https://www.figma.com/design/VsC0tCiC0P4N9PxCiv10F7 |
 | Tableau Public | https://public.tableau.com/app/profile/.15597934/viz/EDA_17888837630310/1_1 |
-| GitHub | https://github.com/JAEYONG0303/sesac-web/tree/main/cosmetics_cart_eda |
+| GitHub | https://github.com/JAEYONG0303/project/tree/main/cosmetics_cart_eda |
 
 ## 재현 방법
 

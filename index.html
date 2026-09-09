@@ -1,269 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>장기요양보험 급여 대시보드</title>
-<meta name="description" content="2010~2024년 장기요양보험 공단부담금을 지역·시간·서비스 구조 세 축으로 보여주는 인터랙티브 대시보드">
-<link rel="stylesheet" href="./styles.css">
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>project — 데이터 분석 프로젝트</title>
+<style>
+  :root { color-scheme: light dark; --ink:#1b1a17; --ink2:#5c5952; --line:#e4e0d7; --bg:#f7f5f0; --panel:#fff; --accent:#2a78d6; }
+  @media (prefers-color-scheme: dark) { :root { --ink:#f1efe9; --ink2:#b9b5ac; --line:#35342f; --bg:#181816; --panel:#212120; --accent:#3987e5; } }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans KR","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif; line-height:1.6; }
+  main { max-width:760px; margin:0 auto; padding:56px 24px; }
+  h1 { font-size:26px; margin:0 0 6px; }
+  .sub { color:var(--ink2); margin:0 0 28px; }
+  .card { display:block; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:18px 20px; margin-bottom:14px; color:inherit; text-decoration:none; }
+  .card:hover { border-color:var(--accent); }
+  .card h2 { font-size:17px; margin:0 0 4px; }
+  .card p { margin:0; color:var(--ink2); font-size:14px; }
+  .card .tag { display:inline-block; font-size:11px; letter-spacing:.06em; color:var(--accent); margin-top:8px; }
+  footer { margin-top:32px; font-size:13px; color:var(--ink2); }
+  footer a { color:var(--accent); }
+</style>
 </head>
 <body>
-<a class="skip-link" href="#main">본문 바로가기</a>
+<main>
+  <h1>데이터 분석 프로젝트</h1>
+  <p class="sub">권재용 · 각 카드를 누르면 대시보드가 열립니다.</p>
 
-<header class="hero">
-  <div class="wrap">
-    <p class="eyebrow">장기요양보험 급여 대시보드 · 2010–2024</p>
-    <h1>15년 만에 4.7배. 그 돈은 어디에 쓰였나.</h1>
-    <p class="lede">
-      장기요양보험 공단부담금은 2010년 3.2조 원에서 2024년 14.8조 원으로 커졌습니다.
-      이 대시보드는 그 돈이 어느 지역에, 어떤 형태로 쓰였는지를 지역·시간·서비스 구조 세 축으로 살펴봅니다.
-      모든 금액은 2024년 불변가격 기준입니다.
-    </p>
-  </div>
-</header>
+  <a class="card" href="./ltc_dashboard/">
+    <h2>장기요양보험 급여 대시보드</h2>
+    <p>2010~2024년 공단부담금을 지역·시간·서비스 구조 세 축으로 살펴보는 인터랙티브 대시보드.</p>
+    <span class="tag">HTML · JS · GitHub Pages</span>
+  </a>
 
-<section class="kpi-strip wrap" aria-label="핵심 지표">
-  <div class="kpi-card" id="kpi-total">
-    <p class="kpi-label">2024년 총급여</p>
-    <p class="kpi-value">불러오는 중…</p>
-    <p class="kpi-sub">&nbsp;</p>
-  </div>
-  <div class="kpi-card" id="kpi-perelder">
-    <p class="kpi-label">노인 1인당 급여 (전국 평균)</p>
-    <p class="kpi-value">불러오는 중…</p>
-    <p class="kpi-sub">&nbsp;</p>
-  </div>
-  <div class="kpi-card" id="kpi-coverage">
-    <p class="kpi-label">수급률 (시도 중앙값)</p>
-    <p class="kpi-value">불러오는 중…</p>
-    <p class="kpi-sub">&nbsp;</p>
-  </div>
-  <div class="kpi-card" id="kpi-home">
-    <p class="kpi-label">재가 비중</p>
-    <p class="kpi-value">불러오는 중…</p>
-    <p class="kpi-sub">&nbsp;</p>
-  </div>
-</section>
+  <a class="card" href="./cosmetics_cart_eda/dashboard/cosmetics_dashboard.html">
+    <h2>화장품 몰 행동 로그 EDA — 장바구니 이탈</h2>
+    <p>Kaggle REES46 클릭스트림 2% 표본. 가격 저항은 장바구니가 아니라 조회→담기 단계에서 생긴다.</p>
+    <span class="tag">Python · Tableau · HTML</span>
+  </a>
 
-<div id="fatal-error" class="fatal-error" hidden></div>
-
-<main id="main">
-
-  <section id="sec1" class="section wrap" aria-labelledby="sec1-title">
-    <h2 id="sec1-title">1. 지역 격차 <span class="q">— 어느 지역이 많이 쓰고 적게 쓰나?</span></h2>
-
-    <div class="controls">
-      <div class="control-group metric-toggle" id="metric-toggle" role="group" aria-label="지표 선택">
-        <button data-metric="total" class="metric-btn is-active" type="button">총급여</button>
-        <button data-metric="perElder" class="metric-btn" type="button">노인 1인당</button>
-        <button data-metric="perRecipient" class="metric-btn" type="button">수급자 1인당</button>
-        <button data-metric="coverage" class="metric-btn" type="button">수급률</button>
-        <button data-metric="homeShare" class="metric-btn" type="button">재가 비중</button>
-      </div>
-
-      <div class="control-group year-control">
-        <button id="play-btn" type="button" aria-label="연도 재생 시작">▶</button>
-        <label for="year-slider">연도 <strong id="year-label">2024</strong></label>
-        <input type="range" id="year-slider" min="2010" max="2024" step="1" value="2024">
-      </div>
-
-      <div class="control-group">
-        <label for="region-select">시도 선택</label>
-        <select id="region-select"><option value="">선택 안 함</option></select>
-      </div>
-    </div>
-
-    <p id="per-elder-warning" class="notice" hidden>
-      노인 1인당 지표는 지역 규모를 보정해 비교하기 좋지만, 분모(노인인구)가 지역마다 다른 속도로 변해 왔습니다.
-      시점 간 비교에는 주의가 필요합니다.
-    </p>
-
-    <div class="chart-grid">
-      <figure class="chart-card">
-        <figcaption>
-          <h3>카토그램 지도</h3>
-          <p class="chart-note">실제 지리 배치가 아니라, 17개 시도를 격자에 배치한 카토그램입니다. 칸 색이 진할수록 값이 큽니다.</p>
-        </figcaption>
-        <div class="cartogram" id="cartogram" role="img" aria-label="시도별 카토그램. 각 칸을 클릭하면 해당 시도가 선택됩니다."></div>
-        <p class="cartogram-hint">칸을 클릭하면 해당 시도가 선택되어 아래 궤적·덤벨 차트에 강조됩니다.</p>
-      </figure>
-
-      <figure class="chart-card">
-        <figcaption>
-          <h3>순위 막대</h3>
-          <p class="chart-note" id="rank-note">선택 지표 기준 17개 시도 내림차순입니다.</p>
-        </figcaption>
-        <div class="chart" id="chart-rank"></div>
-      </figure>
-
-      <figure class="chart-card">
-        <figcaption>
-          <h3>산점도 — 고령화율과의 관계</h3>
-          <p class="chart-note">X축은 고령화율, Y축은 선택 지표입니다. 상관계수가 화면에 표시됩니다.</p>
-        </figcaption>
-        <div class="chart" id="chart-scatter"></div>
-      </figure>
-    </div>
-  </section>
-
-  <section id="sec2" class="section wrap" aria-labelledby="sec2-title">
-    <h2 id="sec2-title">2. 시간의 변화 <span class="q">— 15년 동안 얼마나, 어떤 속도로 커졌나?</span></h2>
-
-    <div class="chart-grid">
-      <figure class="chart-card wide">
-        <figcaption>
-          <h3>전국 총급여 추이</h3>
-          <p class="chart-note">점선은 제도 변화 시점을 표시할 뿐입니다 — 그 시점에 급여가 늘었다는 인과관계를 주장하지 않습니다.</p>
-        </figcaption>
-        <div class="chart chart-tall" id="chart-trend"></div>
-      </figure>
-
-      <figure class="chart-card wide">
-        <figcaption>
-          <h3>시도별 궤적</h3>
-          <p class="chart-note">회색 선은 전체 시도, 강조 선은 선택한 시도입니다. 지표 토글에 따라 선의 값이 바뀝니다.</p>
-        </figcaption>
-        <div class="chart chart-tall" id="chart-trajectory"></div>
-      </figure>
-
-      <figure class="chart-card wide">
-        <figcaption>
-          <h3>성장 배수 (2024 ÷ 2010)</h3>
-          <p class="chart-note">시도별 급여총액이 2010년의 몇 배가 되었는지입니다. * 세종은 출범연도인 2012년 기준입니다.</p>
-        </figcaption>
-        <div class="chart-scroll"><div class="chart chart-tall" id="chart-growth"></div></div>
-      </figure>
-    </div>
-  </section>
-
-  <section id="sec3" class="section wrap" aria-labelledby="sec3-title">
-    <h2 id="sec3-title">3. 구조 전환 <span class="q">— 서비스 구조는 어떻게 바뀌었나?</span></h2>
-
-    <div class="chart-grid">
-      <figure class="chart-card wide">
-        <figcaption>
-          <h3>재가 vs 시설 비중</h3>
-          <p class="chart-note">2012년 49.0%까지 떨어졌던 재가 비중이 2024년 62.7%로 반등했습니다 (V자 형태).</p>
-        </figcaption>
-        <div class="chart chart-tall" id="chart-mix"></div>
-        <dl class="glossary">
-          <dt>재가급여</dt>
-          <dd>집에서 살면서 받는 서비스입니다. 요양보호사가 집으로 오는 방문요양·방문목욕·방문간호, 낮 동안 다녀오는 주야간보호, 그리고 복지용구 대여가 여기 들어갑니다.</dd>
-          <dt>시설급여</dt>
-          <dd>요양시설에 입소해서 받는 서비스입니다. 노인요양시설(흔히 말하는 요양원)과 노인요양공동생활가정이 해당합니다.</dd>
-        </dl>
-      </figure>
-
-      <figure class="chart-card wide">
-        <figcaption>
-          <h3>등급 구성 변화</h3>
-          <p class="chart-note">2014년 이전 중증 비중이 100%인 것은 4·5등급 자체가 없었기 때문이지, 중증 환자만 있었다는 뜻이 아닙니다. 두 번의 꺾임은 등급이 새로 생긴 시점입니다. 인지지원등급은 급여의 0.3%라 면적으로는 거의 보이지 않습니다.</p>
-        </figcaption>
-        <div class="chart chart-tall" id="chart-grade"></div>
-        <dl class="glossary">
-          <dt>중증 (1~3등급)</dt>
-          <dd>2008년 제도 시행 때부터 있던 등급입니다. 혼자서는 일상생활이 어려워 상당한 도움이 필요한 상태입니다.</dd>
-          <dt>경증 (4~5등급) — 2014년 7월 신설</dt>
-          <dd>등급 체계가 3등급에서 5등급으로 개편되면서 4등급과 5등급이 <strong>동시에</strong> 생겼습니다. 그전까지는 도움이 필요해도 1~3등급 기준에 못 미치면 아무 급여도 받지 못했습니다. 특히 5등급은 치매가 있는 경우를 위한 등급이라 "치매특별등급"이라고도 부릅니다.</dd>
-          <dt>인지지원등급 — 2018년 1월 신설</dt>
-          <dd>치매는 있지만 신체기능은 5등급 기준에도 못 미치는 경우입니다. 기존 등급은 <strong>몸을 얼마나 못 쓰는지</strong>로 점수를 매겨서, 인지는 무너지는데 몸은 멀쩡한 경증 치매 환자가 제도 밖에 있었습니다. 그 문을 열어준 등급입니다. 다만 시설 입소는 안 되고 재가 서비스(주로 주야간보호의 인지활동형 프로그램) 중심이라, 급여액 비중은 0.3% 수준으로 작습니다.</dd>
-        </dl>
-      </figure>
-
-      <figure class="chart-card wide">
-        <figcaption>
-          <h3>시도별 재가 비중 이동</h3>
-          <p class="chart-note">회색 점 = 2010년(세종은 2012년), 진한 점 = 2024년. <strong>2024년 재가 비중이 높은 순</strong>으로 정렬했습니다. 선택한 시도는 굵은 선으로 강조됩니다.</p>
-        </figcaption>
-        <div class="chart chart-tall-xl" id="chart-dumbbell"></div>
-      </figure>
-    </div>
-  </section>
-
-  <section id="conclusion" class="section wrap" aria-labelledby="concl-title">
-    <h2 id="concl-title">그래서 무엇을 알 수 있나</h2>
-
-    <ol class="findings">
-      <li>
-        <p class="finding-head">커진 것의 대부분은 고령화가 아니다</p>
-        <p class="finding-eq">
-          <b data-fill="growTotal">—</b> <span>총급여</span>
-          <em>=</em>
-          <b data-fill="growPop">—</b> <span>노인인구</span>
-          <em>×</em>
-          <b data-fill="growPer">—</b> <span>노인 1인당 급여</span>
-        </p>
-        <p>
-          급여가 15년간 <b data-fill="growTotal">—</b>가 되는 동안 노인인구는 <b data-fill="growPop">—</b> 늘었습니다.
-          나머지는 <strong>노인 한 명당 쓰는 돈이 <b data-fill="growPer">—</b>가 된 것</strong>에서 옵니다.
-          인구가 늘어서 커진 게 아니라, 같은 노인 한 명에게 훨씬 많이 쓰게 된 제도입니다.
-          그 사이 급여 대상 등급은 2014년과 2018년 두 번 넓어졌습니다.
-        </p>
-      </li>
-
-      <li>
-        <p class="finding-head">지역 격차는 “얼마를 주나”가 아니라 “누가 받나”에서 온다</p>
-        <p class="finding-eq">
-          <b data-fill="shareCoverage">—</b> <span>수급률이 설명</span>
-          <em>·</em>
-          <b data-fill="shareIntensity">—</b> <span>수급자 1인당 금액이 설명</span>
-        </p>
-        <p>
-          노인 1인당 급여의 지역 간 차이를 둘로 쪼개면, <strong>대부분이 수급률에서 옵니다.</strong>
-          수급자 한 명에게 주는 금액은 지역끼리 <b data-fill="gapIntensity">—</b> 차이지만,
-          노인 중 몇 %가 급여를 받느냐는 <b data-fill="gapCoverage">—</b> 벌어집니다
-          (<b data-fill="covLow">—</b> ~ <b data-fill="covHigh">—</b>).
-          지원 수준이 지역마다 다른 게 아니라, <strong>제도 안으로 들어온 사람의 비율이 다릅니다.</strong>
-        </p>
-      </li>
-
-      <li>
-        <p class="finding-head">제도의 성격이 바뀌었다 — 시설·중증에서 재가·경증으로</p>
-        <p class="finding-eq">
-          <b data-fill="homeNow">—</b> <span>재가 비중</span>
-          <em>·</em>
-          <b data-fill="mildNow">—</b> <span>경증·인지지원 비중</span>
-        </p>
-        <p>
-          2010년에는 급여의 100%가 중증(1~3등급)에게 갔고 재가 비중은 <b data-fill="homeThen">—</b>였습니다.
-          지금은 절반 이상이 경증·인지지원에게 가고, 3분의 2가 집에서 쓰입니다.
-          <strong>“시설에서 중증을 돌보는 제도”에서 “집에서 경증까지 포괄하는 제도”로 옮겨왔습니다.</strong>
-        </p>
-      </li>
-    </ol>
-
-    <p class="findings-caveat">
-      셋 다 <strong>무엇이 일어났는지</strong>에 대한 설명입니다. <strong>왜</strong> 그렇게 됐는지는 이 데이터만으로 답할 수 없습니다.
-      수급률이 낮은 지역이 덜 지원받는 것인지, 그 지역 노인이 실제로 더 건강한 것인지, 아니면 신청·판정 과정이 다른 것인지는
-      이 자료로 구분되지 않습니다. 아래 한계를 함께 읽어 주세요.
-    </p>
-  </section>
-
-  <section class="section wrap">
-    <details class="limitations">
-      <summary>한계와 주의사항</summary>
-      <ul>
-        <li><strong>인과관계를 주장하지 않습니다.</strong> 제도 변화 시점을 표시했지만 효과를 추정하지 않았습니다.</li>
-        <li><strong>수급자 수는 중복배제 값</strong>이라 지역 간 합산이 성립하지 않습니다. 비율 계산에만 썼습니다.</li>
-        <li><strong>집계 기준</strong>: 수급자 주민등록주소지 기준(연도말), 전 기간 통일했습니다.</li>
-        <li><strong>금액은 2024년 불변가격</strong>으로 실질화했습니다 (물가 영향 제거).</li>
-        <li><strong>시군구 단위는 제외</strong>했습니다. 시군구 패널에는 인구·GRDP가 없어 1인당 지표를 만들 수 없습니다.</li>
-        <li><strong>세종특별자치시는 2012년 출범</strong> — 이전 데이터가 없고 2012년 인구도 결측입니다.</li>
-      </ul>
-    </details>
-  </section>
-
+  <footer>저장소: <a href="https://github.com/JAEYONG0303/project">github.com/JAEYONG0303/project</a></footer>
 </main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p id="footer-source">출처: 불러오는 중…</p>
-    <p>생성 방식: <code>prepare_data.py</code>로 원본 엑셀에서 지표를 추출해 <code>data.json</code>으로 저장했습니다.
-      저장소: <a href="https://github.com/JAEYONG0303/sesac-web" target="_blank" rel="noopener">github.com/JAEYONG0303/sesac-web</a></p>
-  </div>
-</footer>
-
-<script src="./app.js" defer></script>
 </body>
 </html>
