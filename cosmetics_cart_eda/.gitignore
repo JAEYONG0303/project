@@ -1,0 +1,9 @@
+# 원본·표본·대형 CSV는 올리지 않는다 (캐글 데이터 재배포 방지, 저장소 크기)
+raw/
+sample/
+work/
+tableau/events_clean.csv
+tableau/sessions.csv
+tableau/cart_items.csv
+__pycache__/
+*.pkl
