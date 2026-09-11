@@ -107,7 +107,7 @@ footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-si
 </header>
 
 <section class="thesis">
-  <p class="lead">담긴 상품의 약 <em>20%</em>가 같은 세션에서 제거되지만, 제거율은 가격대와 무관하게 16~22%로 고르다. 가격 저항은 장바구니가 아니라 <em>조회→담기</em> 단계에서 생긴다. 담기율은 최저가 20.4%에서 최고가 4.7%로 떨어지고, 일단 담긴 뒤의 구매율은 16~19%로 평탄하다.</p>
+  <p class="lead">담은 상품 <em>다섯 개 중 하나</em>는 그 자리에서 다시 뺀다. 그런데 비싸다고 더 많이 빼는 건 아니었다. 가격대가 달라도 제거율은 16~22% 사이에서 거의 안 움직인다. 가격이 정말 걸림돌이 되는 지점은 따로 있다. <em>보고 나서 담기까지</em>다. 담기율은 1 미만 상품에서 20.4%, 50 이상에서 4.7%까지 떨어지는데, 일단 담긴 뒤 사는 비율은 어느 가격대든 16~19%다.</p>
   <div class="kpis" id="kpis"></div>
 </section>
 
@@ -120,13 +120,13 @@ footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-si
       <span><i class="dash" style="color:var(--s3)"></i>제거율 = 제거된 쌍 ÷ 담긴 쌍</span>
     </div>
     <div id="c-price"></div>
-    <p class="note"><b>읽는 법.</b> 주황선만 가격을 따라 단조 감소한다. 파란선과 초록 점선은 가격 구간 사이 차이가 5%p 안이다. 가격이 작용하는 지점은 담기 전 한 곳뿐이다.</p>
+    <p class="note">주황선만 오른쪽으로 갈수록 내려간다. 파란선과 초록 점선은 어느 구간이든 5%p 안에서 왔다 갔다 할 뿐이다. <b>가격은 담기 전에만 작동한다</b>고 봐도 된다.</p>
     <details><summary>표로 보기</summary><div class="tw" id="t-price"></div></details>
   </div>
   <div class="panel">
     <div class="ph"><h2>세션 깔때기</h2><span class="sub">세션 안에 이벤트가 있으면 통과</span></div>
     <div id="c-funnel"></div>
-    <p class="note"><b>과소 추정 주의.</b> 구매 세션 3,277개 중 716개(21.9%)는 같은 세션에 담기 이벤트가 없다. 장바구니가 세션을 넘어 유지되므로 세션 단위 전환은 실제보다 낮게 나온다. 담고 안 산 세션의 26.5%는 같은 사용자가 7일 안에 구매했다.</p>
+    <p class="note"><b>이 깔때기는 실제보다 박하게 나온다.</b> 구매 세션 3,277개 중 716개(21.9%)는 그 세션에 담기 기록이 없다. 전에 담아 둔 걸 이번에 산 경우다. 장바구니가 세션을 넘어 살아 있으니 세션 단위로 자르면 전환이 낮게 보인다. 실제로 담고 안 산 세션의 26.5%는 일주일 안에 같은 사람이 결제했다.</p>
     <details><summary>표로 보기</summary><div class="tw" id="t-funnel"></div></details>
   </div>
 </div>
@@ -138,13 +138,13 @@ footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-si
       <div><h3>매출 (단위 미상)</h3><div id="c-rev"></div></div>
       <div><h3>주문 수</h3><div id="c-ord"></div></div>
     </div>
-    <p class="note">11월이 매출·주문·전환율 모두 최고. 12월은 주문당 상품이 8.9개에서 7.0개로 줄었다. 원인은 데이터에 없다.</p>
+    <p class="note">11월이 매출, 주문, 전환율 전부 가장 높다. 12월엔 한 번에 담는 개수가 8.9개에서 7.0개로 줄었는데, 왜 그런지는 이 데이터로는 알 수 없다.</p>
     <details><summary>표로 보기</summary><div class="tw" id="t-month"></div></details>
   </div>
   <div class="panel">
     <div class="ph"><h2>리텐션 코호트</h2><span class="sub">첫 등장 월 기준, +k월에 이벤트가 있는 사용자 ÷ 코호트</span></div>
     <div id="c-cohort"></div>
-    <p class="note"><b>2019-10 코호트는 좌측 절단.</b> 데이터 시작 전부터 활동하던 사용자가 신규로 잡혀 높게 나온다. 11월 이후 세 코호트는 다음 달 재방문 9~10%로 거의 같다.</p>
+    <p class="note"><b>2019-10 줄은 그대로 믿으면 안 된다.</b> 데이터가 10월부터 시작해서, 그 전부터 오던 사람들이 전부 신규로 잡혔다. 11월 이후 세 코호트만 보면 다음 달 재방문이 9~10%로 거의 같다.</p>
     <details><summary>표로 보기</summary><div class="tw" id="t-cohort"></div></details>
   </div>
 </div>
@@ -153,7 +153,7 @@ footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-si
   <div class="panel">
     <div class="ph"><h2>요일 × 시간대 조회 수</h2><span class="sub">UTC 기준 · 현지 시각은 UTC보다 앞선 것으로 보이나 국가 미상</span></div>
     <div id="c-heat"></div>
-    <p class="note">평일 낮에 몰리고 주말이 덜하다. UTC 12시와 18~19시가 두 정점이며, 시간대별 세션 전환율 차이는 1%p 안이라 시간대가 구매 결정을 바꾸지는 않는다.</p>
+    <p class="note">평일 낮이 가장 붐비고 주말은 한산하다. UTC 12시와 18~19시에 두 번 정점이 오는데, 시간대별 전환율 차이는 1%p도 안 된다. 언제 오느냐가 살지 말지를 바꾸진 않는다.</p>
   </div>
 </div>
 
@@ -173,7 +173,7 @@ footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-si
    └─ 주문당 금액 40.3
       ├─ 주문당 상품 8.1
       └─ 상품당 가격 4.96        <em>← 5 미만이 구매의 70%</em></pre>
-    <p class="note">검산 2,257 × 1.47 × 8.11 × 4.96 = 133,686. 재구매자가 전체 주문의 48%를 만든다.</p>
+    <p class="note">곱해 보면 133,686으로 맞아떨어진다. 주문의 절반 가까이(48%)가 두 번 이상 산 사람에게서 나온다.</p>
   </div>
   <div class="panel">
     <h2>한계</h2>
