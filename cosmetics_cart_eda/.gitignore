@@ -7,3 +7,4 @@ tableau/sessions.csv
 tableau/cart_items.csv
 __pycache__/
 *.pkl
+full_build/data/
