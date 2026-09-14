@@ -107,13 +107,13 @@ footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--line);font-si
 </header>
 
 <section class="thesis">
-  <p class="lead">담은 상품 <em>다섯 개 중 하나</em>는 그 자리에서 다시 뺀다. 그런데 비싸다고 더 많이 빼는 건 아니었다. 가격대가 달라도 제거율은 16~22% 사이에서 거의 안 움직인다. 가격이 정말 걸림돌이 되는 지점은 따로 있다. <em>보고 나서 담기까지</em>다. 담기율은 1 미만 상품에서 20.4%, 50 이상에서 4.7%까지 떨어지는데, 일단 담긴 뒤 사는 비율은 어느 가격대든 16~19%다.</p>
+  <p class="lead">담은 상품 <em>다섯 개 중 하나</em>는 그 자리에서 다시 뺀다. 그런데 비싸다고 더 많이 빼는 건 아니었다. 가격대가 달라도 제거율은 16~22% 사이에서 거의 안 움직인다. 가격이 정말 걸림돌이 되는 지점은 따로 있다. <em>보고 나서 담기까지</em>다. 담기 전환율은 1 미만 상품에서 20.4%, 50 이상에서 4.7%까지 떨어지는데, 일단 담긴 뒤 사는 비율은 어느 가격대든 16~19%다.</p>
   <div class="kpis" id="kpis"></div>
 </section>
 
 <div class="grid g-2a">
   <div class="panel hero">
-    <div class="ph"><h2>가격대별 담기율 · 구매율 · 제거율</h2><span class="sub">(세션, 상품) 쌍 기준 · 가격 0 이하 제외</span></div>
+    <div class="ph"><h2>가격대별 담기 전환율 · 구매 전환율 · 제거율</h2><span class="sub">(세션, 상품) 쌍 기준 · 가격 0 이하 제외</span></div>
     <div class="legend">
       <span><i style="background:var(--s2)"></i>조회→담기 = 담긴 쌍 ÷ 조회한 쌍</span>
       <span><i style="background:var(--s1)"></i>담기→구매 = 구매된 쌍 ÷ 조회 후 담긴 쌍</span>
@@ -223,7 +223,7 @@ document.getElementById("kpis").innerHTML=[
 /* Price band: three lines, one scale */
 (function(){
  const W=720,H=300,m={t:16,r:24,b:38,l:40};const iw=W-m.l-m.r,ih=H-m.t-m.b;
- const s=svgEl("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"가격대별 담기율, 구매율, 제거율 선 차트"});
+ const s=svgEl("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"가격대별 담기 전환율, 구매 전환율, 제거율 선 차트"});
  const n=D.price.length;const x=i=>m.l+iw*(i+0.5)/n;const yMax=25;const y=v=>m.t+ih*(1-v/yMax);
  for(let v=0;v<=yMax;v+=5){s.appendChild(svgEl("line",{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),class:v?"gridl":"base"}));const t=svgEl("text",{x:m.l-8,y:y(v)+4,class:"ax","text-anchor":"end"});t.textContent=v+"%";s.appendChild(t)}
  D.price.forEach((d,i)=>{const t=svgEl("text",{x:x(i),y:H-m.b+18,class:"ax","text-anchor":"middle"});t.textContent=d.band;s.appendChild(t)});
@@ -244,7 +244,7 @@ document.getElementById("kpis").innerHTML=[
 
 /* Funnel: horizontal bars */
 (function(){
- const W=420,H=230,m={t:8,r:70,b:8,l:78};const iw=W-m.l-m.r,rows=D.funnel.length,rh=(H-m.t-m.b)/rows,bh=rh*0.62;
+ const W=420,H=230,m={t:8,r:96,b:8,l:78};const iw=W-m.l-m.r,rows=D.funnel.length,rh=(H-m.t-m.b)/rows,bh=rh*0.62;
  const s=svgEl("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"세션 깔때기 막대"});const max=D.funnel[0].n;
  s.appendChild(svgEl("line",{x1:m.l,x2:m.l,y1:m.t,y2:H-m.b,class:"base"}));
  D.funnel.forEach((d,i)=>{const y=m.t+rh*i+(rh-bh)/2,w=Math.max(iw*d.n/max,3);
@@ -252,7 +252,7 @@ document.getElementById("kpis").innerHTML=[
   const l=svgEl("text",{x:m.l-10,y:y+bh/2+4,class:"axl","text-anchor":"end"});l.textContent=d.stage;s.appendChild(l);
   const v=svgEl("text",{x:m.l+w+8,y:y+bh/2+4,class:"lbl"});v.textContent=fmt(d.n);s.appendChild(v);
   const pct=(d.n/max*100).toFixed(1),prev=i?(d.n/D.funnel[i-1].n*100).toFixed(1):null;
-  const p2=svgEl("text",{x:m.l+w+8,y:y+bh/2+18,class:"lbl2"});p2.textContent=i?`전체의 ${pct}% · 직전의 ${prev}%`:"100%";if(i)s.appendChild(p2);
+  const p2=svgEl("text",{x:m.l+w+8,y:y+bh/2+18,class:"lbl2"});p2.textContent=i?`전체 ${pct}%`:"100%";if(i)s.appendChild(p2);
   bind(r,`<b>${d.stage}</b> ${fmt(d.n)} 세션<br>전체 대비 ${pct}%${prev?`<br>직전 단계 대비 ${prev}%`:""}`)});
  document.getElementById("c-funnel").appendChild(s);
  table("t-funnel",["단계","세션","전체 대비","직전 대비"],D.funnel.map((d,i)=>[d.stage,fmt(d.n),(d.n/max*100).toFixed(1)+"%",i?(d.n/D.funnel[i-1].n*100).toFixed(1)+"%":"—"]));
