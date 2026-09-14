@@ -22,21 +22,29 @@ USE cosmetics_cart_eda;
 
 LOAD DATA LOCAL INFILE 'C:/Users/wodyd/Desktop/Projects/sesac-web/cosmetics_cart_eda/full_build/data/batch1_clean.csv'
 INTO TABLE cosmetics_events
+CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
-(event_time, event_type, product_id, category_id, category_code, brand, price,
+(event_time, event_type, product_id, category_id, @category_code, @brand, price,
  user_id, user_session, ts, sess, month, dow, hour, @order_id)
-SET order_id = NULLIF(@order_id, ''), batch_id = 1;
+SET category_code = NULLIF(@category_code, ''),
+    brand = NULLIF(@brand, ''),
+    order_id = NULLIF(@order_id, ''),
+    batch_id = 1;
 
 LOAD DATA LOCAL INFILE 'C:/Users/wodyd/Desktop/Projects/sesac-web/cosmetics_cart_eda/full_build/data/batch2_clean.csv'
 INTO TABLE cosmetics_events
+CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES
-(event_time, event_type, product_id, category_id, category_code, brand, price,
+(event_time, event_type, product_id, category_id, @category_code, @brand, price,
  user_id, user_session, ts, sess, month, dow, hour, @order_id)
-SET order_id = NULLIF(@order_id, ''), batch_id = 2;
+SET category_code = NULLIF(@category_code, ''),
+    brand = NULLIF(@brand, ''),
+    order_id = NULLIF(@order_id, ''),
+    batch_id = 2;
 ```
 
 ## 3. 적재 후 확인 (직접 SQL 짜보기용 — 여기 있는 값은 참고용, 실제로는 본인이 실행해서 확인)
@@ -70,3 +78,10 @@ GROUP BY price_band;
   에는 영향이 없고, 세션 단위 지표(세션 수, 세션 전환율)에서 아주 미세한 과대 계산 가능성이
   있다는 정도로만 참고.
 - `full_build/data/*.csv`는 git에 안 올라간다(`.gitignore`). 로컬에만 남는다.
+- **적재 전 실제로 검증한 두 가지** (2026-09-14):
+  1. 기본키에 `event_type`이 빠져 있으면 배치1에서만 9,341행이 충돌한다(같은 상품에
+     `cart`→`remove_from_cart`가 같은 초에 찍히는 경우가 있음 — 원본 타임스탬프가 초 단위
+     까지만 있음). `schema.sql`은 이미 `event_type`을 포함해서 고쳐뒀다.
+  2. `category_code`/`brand`의 결측값이 CSV에는 빈 문자열로 저장돼 있다. 위 `LOAD DATA`처럼
+     `NULLIF(..., '')`를 안 거치면 MariaDB가 이걸 빈 문자열로 넣어버려서, "결측 98%" 같은
+     `IS NULL` 기준 집계가 실제보다 낮게(또는 0으로) 나온다. 위 명령 그대로 쓰면 문제없다.
